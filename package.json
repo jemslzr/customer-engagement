@@ -1,0 +1,15 @@
+{
+  "name": "customerpulse",
+  "version": "1.0.0",
+  "description": "Real-Time Customer Friction Scoring & Automated Churn Prevention Platform built on Confluent Cloud & Apache Flink SQL",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "seed": "node seed_confluent_accounts.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "ws": "^8.18.0"
+  }
+}

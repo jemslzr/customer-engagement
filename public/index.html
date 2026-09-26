@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomerPulse — Customer Retention & Churn Monitor</title>
+  <meta name="description" content="Easy-to-understand real-time customer retention and churn prevention monitor for business owners, powered by Confluent Cloud.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- New Bespoke CustomerPulse Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234F46E5'/><path d='M5 16h5l3-7 4 15 3-8h7' stroke='%2338BDF8' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' fill='none'/><circle cx='27' cy='16' r='2.2' fill='%2310B981'/></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo-group">
+        <div class="logo-icon">⚡</div>
+        <div>
+          <div class="logo-title">CustomerPulse</div>
+          <div class="logo-sub">Customer Retention & Churn Monitor</div>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" data-view="dashboard">Live Monitor</button>
+        <button class="nav-btn" data-view="setup">How to Install on Website</button>
+        <button class="nav-btn" data-view="confluent">Confluent & Flink SQL</button>
+      </nav>
+
+      <div class="header-actions">
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          <span>Live Ingestion Active</span>
+        </div>
+        <a href="/demo-store.html" target="_blank" class="btn btn-primary btn-sm">
+          <span>Open Demo Store</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-wrapper">
+
+    <!-- Interactive Test Actions Banner -->
+    <div class="welcome-banner">
+      <div>
+        <div class="welcome-title">Test Real-Time Customer Behaviors</div>
+        <div class="welcome-desc">Click any test scenario to see how CustomerPulse alerts your team, or click "Open Demo Store" to test as a visitor:</div>
+      </div>
+      <div class="quick-tests">
+        <span class="quick-test-label">Instant Triggers:</span>
+        <button class="btn btn-danger btn-sm" id="btn-test-abandon">
+          🚨 Abandon Cart ($1,999)
+        </button>
+        <button class="btn btn-secondary btn-sm" id="btn-test-support">
+          ⚠️ Submit Support Issue
+        </button>
+        <button class="btn btn-success btn-sm" id="btn-test-purchase">
+          ✅ Successful Purchase ($3,499)
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 Clear Business Metrics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Active Visitors Now</span>
+          <span class="stat-icon">👥</span>
+        </div>
+        <div class="stat-number mono" id="stat-active-visitors">6</div>
+        <div class="stat-sub">Browsing pages in the last 60 seconds</div>
+      </div>
+
+      <div class="stat-card alert-card">
+        <div class="stat-header">
+          <span class="stat-title" style="color:var(--amber-text)">At-Risk of Leaving</span>
+          <span class="stat-icon">⚠️</span>
+        </div>
+        <div class="stat-number mono text-amber" id="stat-at-risk-count">2</div>
+        <div class="stat-sub">Stuck on checkout or experiencing issues</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Revenue Protected</span>
+          <span class="stat-icon">🛡️</span>
+        </div>
+        <div class="stat-number mono text-emerald" id="stat-saved-revenue">$4,200</div>
+        <div class="stat-sub">Saved through 1-click rescue actions</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-title">Real-Time Ingestion Speed</span>
+          <span class="stat-icon">⚡</span>
+        </div>
+        <div class="stat-number mono" id="stat-events-sec">1.4 <span class="text-xs text-muted" style="font-size:0.8rem">events/s</span></div>
+        <div class="stat-sub"><span id="stat-total-events" class="mono">34</span> total events ingested today</div>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         VIEW 1: DASHBOARD (OPTIMIZED, USER-FRIENDLY & UNCOMPLICATED)
+         ═════════════════════════════════════════════════════════════ -->
+    <div class="view-content active" id="view-dashboard">
+      <div class="layout-split">
+
+        <!-- Left Column: Simple At-Risk Customers Table -->
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Active Visitors & At-Risk Customers</h2>
+              <p class="panel-sub">Click any customer row to inspect their journey or send an instant rescue offer</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <input type="text" class="search-box" id="cust-search" placeholder="Search customer...">
+              <button class="btn btn-secondary btn-sm" id="btn-export-csv" title="Download CSV Report">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                CSV
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="window.CustomerPulse.refreshData()">Refresh</button>
+            </div>
+          </div>
+
+          <div class="panel-body no-pad table-wrap">
+            <table class="clean-table" id="customers-table">
+              <thead>
+                <tr>
+                  <th>Customer Account</th>
+                  <th>Current Page</th>
+                  <th>Monthly Value</th>
+                  <th>Retention Health</th>
+                  <th>Friction Signal</th>
+                  <th class="r">Action</th>
+                </tr>
+              </thead>
+              <tbody id="customers-tbody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Column: Simple Live Activity Feed -->
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title">Live Activity Feed</h2>
+              <p class="panel-sub">Incoming clickstream from your website</p>
+            </div>
+            <span class="text-xs text-muted mono" id="feed-status-text">Connected</span>
+          </div>
+
+          <div class="panel-body no-pad">
+            <div class="activity-list" id="activity-feed">
+              <!-- Events prepended here -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Regional Trends (Simple & Intuitive) -->
+      <div class="panel" style="margin-top:10px">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Visitor Volume by Geographic Region</h2>
+            <p class="panel-sub">Monitored via Confluent Flink ML predictive modeling to spot traffic drops early</p>
+          </div>
+        </div>
+        <div class="panel-body no-pad table-wrap">
+          <table class="clean-table" id="regions-table">
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th class="r">Current Traffic</th>
+                <th class="r">Forecasted Trajectory</th>
+                <th class="r">Momentum Trend</th>
+                <th class="r">Cohort Action</th>
+              </tr>
+            </thead>
+            <tbody id="regions-tbody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         VIEW 2: HOW TO INSTALL (UNCOMPLICATED)
+         ═════════════════════════════════════════════════════════ -->
+    <div class="view-content" id="view-setup" style="display:none">
+      <div class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">How to Install CustomerPulse on Any Website</h2>
+        </div>
+        <div class="panel-body">
+          <p style="margin-bottom:14px;color:var(--text-muted)">
+            Installing CustomerPulse on your store, Next.js app, or Shopify takes 10 seconds. Just copy and paste this script tag into the <code>&lt;head&gt;</code> section of your HTML:
+          </p>
+
+          <pre class="code-box">&lt;!-- CustomerPulse Real-Time Retention Tracker --&gt;
+&lt;script src="http://localhost:3000/tracker.js" data-site-id="my_store_01"&gt;&lt;/script&gt;</pre>
+
+          <div style="margin-top:24px">
+            <h3 style="font-size:0.95rem;margin-bottom:8px">What does it track automatically?</h3>
+            <ul style="padding-left:20px;color:var(--text-muted);font-size:0.85rem;line-height:1.8">
+              <li><strong>Page views & Dwell time:</strong> Understand what products and pages customers are browsing.</li>
+              <li><strong>Time spent:</strong> Know immediately if a customer is stuck on checkout.</li>
+              <li><strong>Cart abandonment:</strong> Detect when someone leaves with items still in their cart.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═════════════════════════════════════════════════════════
+         VIEW 3: CONFLUENT & FLINK SQL (FOR DEV DAY CONTEST)
+         ═════════════════════════════════════════════════════════ -->
+    <div class="view-content" id="view-confluent" style="display:none">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="panel-title">Confluent Cloud & Apache Flink SQL Setup</h2>
+            <p class="panel-sub">Use these exact statements in your Confluent Cloud Flink SQL workspace for your Dev Day submission</p>
+          </div>
+          <a href="/CONFLUENT_SETUP.md" target="_blank" class="btn btn-secondary btn-sm">Full Step-by-Step Guide &rarr;</a>
+        </div>
+        <div class="panel-body">
+          <h3 style="font-size:0.9rem;margin-bottom:6px">1. Keyed Customer Accounts (Primary Key Enforcement)</h3>
+          <pre class="code-box">CREATE MATERIALIZED TABLE accounts_keyed (
+  user_id STRING NOT NULL,
+  account_name STRING,
+  tier STRING,
+  mrr DOUBLE,
+  email STRING,
+  PRIMARY KEY (user_id) NOT ENFORCED
+) AS
+SELECT
+  COALESCE(user_id, '') AS user_id,
+  account_name, tier, mrr, email
+FROM customer_accounts;</pre>
+
+          <h3 style="font-size:0.9rem;margin-top:18px;margin-bottom:6px">2. Behavioral Friction Scoring (Windowed Stream Aggregation)</h3>
+          <pre class="code-box">CREATE MATERIALIZED TABLE session_friction_scores AS
+SELECT
+  session_id, user_id,
+  window_end AS calculated_at,
+  COUNT(*) AS total_interactions,
+  SUM(CASE
+    WHEN event_type = 'payment_failed' THEN 45
+    WHEN event_type = 'rage_click' THEN 25
+    WHEN event_type = 'support_query' THEN 20
+    WHEN event_type = 'checkout_start' AND cart_value > 500 THEN 15
+    ELSE 1
+  END) AS friction_score,
+  MAX(cart_value) AS exposed_cart_value,
+  MAX(page_path) AS last_active_page
+FROM TABLE(
+  TUMBLE(TABLE customer_clickstream, DESCRIPTOR(event_time), INTERVAL '1' MINUTE)
+)
+GROUP BY session_id, user_id, window_start, window_end;</pre>
+
+          <h3 style="font-size:0.9rem;margin-top:18px;margin-bottom:6px">3. Automated Retention Interventions (Temporal Table Join & Action Routing)</h3>
+          <pre class="code-box">CREATE MATERIALIZED TABLE retention_interventions AS
+SELECT
+  f.session_id, f.user_id,
+  a.account_name, a.tier, a.mrr,
+  f.friction_score, f.exposed_cart_value,
+  f.last_active_page, f.calculated_at,
+  CASE
+    WHEN a.tier = 'Enterprise' AND f.friction_score >= 40 THEN 'VIP_CSM_SLACK_ALERT'
+    WHEN f.exposed_cart_value >= 1000 AND f.friction_score >= 40 THEN 'RESCUE_PROMO_15PCT'
+    WHEN f.friction_score >= 30 THEN 'PROACTIVE_CHAT_OFFER'
+    ELSE 'STANDARD_MONITORING'
+  END AS recommended_action
+FROM session_friction_scores f
+JOIN accounts_keyed FOR SYSTEM_TIME AS OF f.calculated_at AS a
+  ON f.user_id = a.user_id
+WHERE f.friction_score >= 30;</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Customer Journey & Rescue Modal ────────────────────────────────────── -->
+  <div class="modal-overlay" id="rescue-modal" style="display:none">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h3 class="modal-title" id="modal-cust-name">Sarah Connor (Acme Corp)</h3>
+          <div class="modal-sub" id="modal-cust-meta">Enterprise ($1,999/mo) &bull; North America (US-East)</div>
+        </div>
+        <button class="modal-close" onclick="window.CustomerPulse.closeModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-summary-box">
+          <div class="ms-item">
+            <span class="ms-lbl">Risk Level</span>
+            <span class="ms-val text-rose" id="modal-risk-score">75% At-Risk</span>
+          </div>
+          <div class="ms-item">
+            <span class="ms-lbl">Monthly Value</span>
+            <span class="ms-val" id="modal-mrr">$1,999/mo</span>
+          </div>
+          <div class="ms-item">
+            <span class="ms-lbl">Last Action</span>
+            <span class="ms-val mono text-xs" id="modal-last-event">checkout_abandon</span>
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <label class="modal-label">Customer Activity Trail:</label>
+          <div class="journey-trail" id="modal-trail">
+            <!-- Trail badges -->
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <label class="modal-label">Select Re-Engagement Offer:</label>
+          <div class="offer-options">
+            <label class="offer-option selected">
+              <input type="radio" name="rescue_offer" value="15_percent" checked>
+              <div>
+                <strong>🏷️ 15% Rescue Promo Code (RESCUE15)</strong>
+                <div class="offer-desc">Sends immediate discount to checkout page and email.</div>
+              </div>
+            </label>
+            <label class="offer-option">
+              <input type="radio" name="rescue_offer" value="free_month">
+              <div>
+                <strong>🎁 1 Free Month Credit Extension</strong>
+                <div class="offer-desc">Applies 30-day grace period for high-value Enterprise accounts.</div>
+              </div>
+            </label>
+            <label class="offer-option">
+              <input type="radio" name="rescue_offer" value="priority_csm">
+              <div>
+                <strong>💬 Priority Support Outreach</strong>
+                <div class="offer-desc">Dispatches Slack webhook to your Customer Success team.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn btn-secondary" onclick="window.CustomerPulse.closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="btn-modal-confirm-rescue">
+          Dispatch Rescue Offer Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

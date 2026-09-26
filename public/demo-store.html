@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Cloud & Gear — Enterprise Developer Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Custom Modern Apex Store Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230F172A'/><path d='M16 6L7 24h18L16 6z' fill='none' stroke='%23818CF8' stroke-width='2.5' stroke-linejoin='round'/><path d='M12 18l4-7 4 7' fill='none' stroke='%2338BDF8' stroke-width='2' stroke-linecap='round'/></svg>">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-subtle: #eef2ff;
+      --emerald: #10b981;
+      --emerald-subtle: #ecfdf5;
+      --rose: #e11d48;
+      --rose-subtle: #fff1f2;
+      --amber: #f59e0b;
+      --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 80px;
+    }
+
+    /* Top Notice Banner */
+    .top-notice {
+      background: #eef2ff;
+      border-bottom: 1px solid #c7d2fe;
+      color: #3730a3;
+      padding: 9px 20px;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .top-notice strong { font-weight: 700; }
+    .top-notice a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .top-notice a:hover { text-decoration: underline; }
+
+    /* Header */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .nav-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 6px 4px;
+      position: relative;
+      transition: color 150ms;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--accent);
+    }
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 99px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 150ms;
+      text-decoration: none;
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn-secondary {
+      background: #ffffff;
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover { background: #f1f5f9; }
+    .btn-danger {
+      background: #fff1f2;
+      border-color: #fecdd3;
+      color: var(--rose);
+    }
+    .btn-danger:hover { background: #ffe4e6; }
+    .btn-outline-accent {
+      background: #fff;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .btn-outline-accent:hover {
+      background: var(--accent-subtle);
+    }
+
+    .cart-pill {
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 99px;
+      margin-left: 4px;
+    }
+
+    /* Container */
+    main {
+      max-width: 1140px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    /* Section Views */
+    .store-section {
+      display: none;
+      animation: fadeIn 180ms ease-out;
+    }
+    .store-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      flex-wrap: wrap;
+    }
+    .hero-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      max-width: 600px;
+    }
+
+    /* Products Grid */
+    .section-head {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: transform 150ms, box-shadow 150ms;
+    }
+    .product-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .product-icon {
+      font-size: 2.2rem;
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      height: 110px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .product-name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .product-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .product-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .product-price {
+      font-size: 1.2rem;
+      font-weight: 800;
+      font-family: var(--mono);
+      color: var(--text);
+    }
+
+    /* ── Pricing Plans Section ────────────────────────────────────────────── */
+    .pricing-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 10px auto 36px;
+    }
+    .pricing-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .pricing-sub {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .pricing-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      transition: all 150ms;
+    }
+    .pricing-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .pricing-card.featured {
+      border: 2px solid var(--accent);
+      background: #ffffff;
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.08);
+    }
+    .popular-tag {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .plan-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .plan-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      min-height: 42px;
+    }
+    .plan-price-row {
+      margin: 20px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .plan-price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-family: var(--mono);
+      letter-spacing: -0.02em;
+    }
+    .plan-period {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .plan-features {
+      list-style: none;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.85rem;
+      flex: 1;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #334155;
+    }
+    .check-icon {
+      color: var(--emerald);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    /* ── Documentation Section ────────────────────────────────────────────── */
+    .docs-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 28px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .docs-nav {
+      border-right: 1px solid var(--border);
+      padding-right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .docs-nav-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 14px 0 6px;
+    }
+    .docs-nav-title:first-child { margin-top: 0; }
+    .docs-link {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .docs-link:hover, .docs-link.active {
+      color: var(--accent);
+      background: var(--accent-subtle);
+      font-weight: 600;
+    }
+    .docs-content {
+      padding-left: 10px;
+    }
+    .docs-h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .docs-p {
+      color: #475569;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .docs-code {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: #334155;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    /* ── Support Desk Section ─────────────────────────────────────────────── */
+    .support-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 28px;
+    }
+    .support-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .support-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .support-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 22px;
+    }
+    .form-row {
+      margin-bottom: 16px;
+    }
+    .form-lbl {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.86rem;
+      padding: 9px 12px;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 150ms;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--accent);
+      background: #fff;
+    }
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .faq-q {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .faq-a {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Simulation Panel */
+    .test-actions-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 32px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .box-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .box-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .box-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Bottom Live Dock */
+    .dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
+      z-index: 100;
+    }
+    .dock-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dock-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+    }
+    .dock-mono {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 860px) {
+      .docs-layout, .support-layout { grid-template-columns: 1fr; }
+      .docs-nav { border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px; }
+      .hero-banner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+
+  <!-- Embed real CustomerPulse Tracker SDK -->
+  <script src="/tracker.js" data-site-id="apex_demo_store"></script>
+</head>
+<body>
+
+  <div class="top-notice">
+    <div>
+      <strong>Live Demo Store:</strong> Any plan, item, or action clicked here emits real events into CustomerPulse via <code>/api/v1/track</code>!
+    </div>
+    <a href="/" target="_blank">&larr; Return to CustomerPulse Dashboard</a>
+  </div>
+
+  <header>
+    <div class="nav-inner">
+      <div class="brand" onclick="showSection('products')">
+        <div class="brand-icon">A</div>
+        Apex Cloud & Gear
+      </div>
+      <div class="nav-links">
+        <span class="nav-link active" id="nav-products" onclick="showSection('products')">Products</span>
+        <span class="nav-link" id="nav-pricing" onclick="showSection('pricing')">Pricing Plans</span>
+        <span class="nav-link" id="nav-docs" onclick="showSection('docs')">Documentation</span>
+        <span class="nav-link" id="nav-support" onclick="showSection('support')">Support Desk</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-secondary" onclick="logIn()">
+          <span id="login-text">Log In</span>
+        </button>
+        <button class="btn" onclick="openCheckout()">
+          Cart <span class="cart-pill" id="cart-pill">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ═════════════════════════════════════════════════════════
+         SECTION 1: PRODUCTS CATALOG
+         ═════════════════════════════════════════════════════════ -->
+    <section class="store-section active" id="sec-products">
+      <div class="hero-banner">
+        <div>
+          <h1 class="hero-title">Developer Hardware & Dedicated Cloud</h1>
+          <p class="hero-desc">
+            Production-grade workstations, tactile peripherals, and managed Kafka clusters engineered for high-velocity software teams.
+          </p>
+        </div>
+        <div>
+          <button class="btn" onclick="showSection('pricing')">View Cloud Plans</button>
+        </div>
+      </div>
+
+      <div class="section-head">
+        Featured Hardware & Cloud Licenses
+        <span style="font-size:0.8rem;color:var(--text-muted);font-weight:normal">Real telemetry emitted on click</span>
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-icon">💻</div>
+          <div class="product-name">Apex Workstation Pro 16"</div>
+          <div class="product-meta">64GB Unified RAM &bull; M3 Max &bull; 2TB NVMe</div>
+          <div class="product-foot">
+            <div class="product-price">$3,499</div>
+            <button class="btn btn-secondary" onclick="addToCart('Apex Workstation Pro 16', 3499)">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon">⌨️</div>
+          <div class="product-name">Tactile Mechanical Keyboard</div>
+          <div class="product-meta">Hot-Swappable &bull; Bluetooth 5.2 &bull; Gateron Silent</div>
+          <div class="product-foot">
+            <div class="product-price">$189</div>
+            <button class="btn btn-secondary" onclick="addToCart('Tactile Mechanical Keyboard', 189)">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon">⚡</div>
+          <div class="product-name">Dedicated Kafka Stream Cluster</div>
+          <div class="product-meta">3-Broker Cluster &bull; Schema Registry Included</div>
+          <div class="product-foot">
+            <div class="product-price">$1,999/mo</div>
+            <button class="btn btn-secondary" onclick="addToCart('Dedicated Kafka Stream Cluster', 1999)">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon">🎧</div>
+          <div class="product-name">Studio Wireless Monitor Headphones</div>
+          <div class="product-meta">Active Noise Cancellation &bull; 40h Battery</div>
+          <div class="product-foot">
+            <div class="product-price">$299</div>
+            <button class="btn btn-secondary" onclick="addToCart('Studio Wireless Monitor Headphones', 299)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         SECTION 2: PRICING PLANS / VIEW CLOUD PLANS
+         ═════════════════════════════════════════════════════════ -->
+    <section class="store-section" id="sec-pricing">
+      <div class="pricing-header">
+        <h1 class="pricing-title">Simple, Transparent Cloud Plans</h1>
+        <p class="pricing-sub">
+          Predictable monthly pricing for teams building real-time data pipelines on Confluent Cloud and Kafka.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Starter Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">Starter Cloud</div>
+          <div class="plan-desc">For indie hackers and early stage startups building initial streaming prototypes.</div>
+          <div class="plan-price-row">
+            <span class="plan-price">$99</span>
+            <span class="plan-period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check-icon">✓</span> Up to 500k monthly streaming events</li>
+            <li><span class="check-icon">✓</span> 3 Confluent Datagen Connectors</li>
+            <li><span class="check-icon">✓</span> Confluent Schema Registry (Avro)</li>
+            <li><span class="check-icon">✓</span> Standard 24h Community Support</li>
+            <li><span class="check-icon">✓</span> 7-day data retention buffer</li>
+          </ul>
+          <button class="btn btn-outline-accent" onclick="selectPlan('Starter Cloud', 99)">Choose Starter</button>
+        </div>
+
+        <!-- Growth Plan (Featured) -->
+        <div class="pricing-card featured">
+          <div class="popular-tag">Most Popular</div>
+          <div class="plan-name">Growth Pipeline</div>
+          <div class="plan-desc">Ideal for expanding digital businesses requiring real-time Flink SQL and high throughput.</div>
+          <div class="plan-price-row">
+            <span class="plan-price">$499</span>
+            <span class="plan-period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check-icon">✓</span> Up to 15 million monthly events</li>
+            <li><span class="check-icon">✓</span> Unlimited Confluent Cloud Connectors</li>
+            <li><span class="check-icon">✓</span> 10 CFU Dedicated Apache Flink Compute Pool</li>
+            <li><span class="check-icon">✓</span> Stream Lineage & End-to-End Governance</li>
+            <li><span class="check-icon">✓</span> 1-hour SLA Priority Support & CSM</li>
+            <li><span class="check-icon">✓</span> Automated Retention Webhook Playbooks</li>
+          </ul>
+          <button class="btn btn-primary" onclick="selectPlan('Growth Pipeline', 499)">Start Growth Trial</button>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">Enterprise Scale</div>
+          <div class="plan-desc">Mission-critical dedicated clusters with customized compliance and 99.99% availability.</div>
+          <div class="plan-price-row">
+            <span class="plan-price">$1,999</span>
+            <span class="plan-period">/ month</span>
+          </div>
+          <ul class="plan-features">
+            <li><span class="check-icon">✓</span> Unlimited streaming throughput & partitions</li>
+            <li><span class="check-icon">✓</span> Dedicated AWS Multi-AZ Cluster (Ohio us-east-2)</li>
+            <li><span class="check-icon">✓</span> Custom Flink ML Predictive Models</li>
+            <li><span class="check-icon">✓</span> SOC2 Type II, HIPAA & GDPR Compliance</li>
+            <li><span class="check-icon">✓</span> 15-minute Emergency Response Hotline</li>
+            <li><span class="check-icon">✓</span> Dedicated Solutions Architect Assigned</li>
+          </ul>
+          <button class="btn btn-outline-accent" onclick="selectPlan('Enterprise Scale', 1999)">Contact Sales / Upgrade</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         SECTION 3: DOCUMENTATION
+         ═════════════════════════════════════════════════════════ -->
+    <section class="store-section" id="sec-docs">
+      <div class="docs-layout">
+        <div class="docs-nav">
+          <div class="docs-nav-title">Getting Started</div>
+          <span class="docs-link active" onclick="showDoc('quickstart')">Quickstart Overview</span>
+          <span class="docs-link" onclick="showDoc('auth')">Authentication & Keys</span>
+          <span class="docs-link" onclick="showDoc('ingestion')">HTTP Telemetry API</span>
+
+          <div class="docs-nav-title">Stream Architecture</div>
+          <span class="docs-link" onclick="showDoc('kafka')">Kafka Topics & Schema</span>
+          <span class="docs-link" onclick="showDoc('flink')">Flink SQL ML Models</span>
+          <span class="docs-link" onclick="showDoc('webhooks')">Automated Playbooks</span>
+        </div>
+
+        <div class="docs-content">
+          <div id="doc-quickstart">
+            <h1 class="docs-h1">Developer Documentation & Quickstart</h1>
+            <p class="docs-p">
+              Apex Cloud & Gear streams real-time customer behavior directly to our Confluent Cloud Apache Kafka backend. By analyzing event timestamps, dwell duration, and drop-off patterns in tumbling 30-second windows, our platform identifies and rescues at-risk customer sessions before abandonment.
+            </p>
+
+            <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:8px">1. Embedding the CustomerPulse Client SDK</h3>
+            <p class="docs-p">Insert this single-line tag before the closing <code>&lt;/head&gt;</code> tag on any website:</p>
+            <pre class="docs-code">&lt;script src="http://localhost:3000/tracker.js" data-site-id="apex_store"&gt;&lt;/script&gt;</pre>
+
+            <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:8px">2. Capturing High-Friction Events</h3>
+            <p class="docs-p">Trigger custom telemetry when users experience friction during checkout:</p>
+            <pre class="docs-code">// Fired when customer pauses or leaves during credit card submission
+CustomerPulse.track('checkout_abandon', {
+  cartValue: 1999,
+  abandonStep: 'payment_auth_pending',
+  regionid: 'Region_1'
+});</pre>
+
+            <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:8px">3. Ingestion Pipeline Schema (Apache Avro)</h3>
+            <p class="docs-p">All raw pageviews conform to the registered schema contract:</p>
+            <pre class="docs-code">{
+  "type": "record",
+  "name": "PageviewRecord",
+  "fields": [
+    { "name": "userid", "type": "string" },
+    { "name": "pageid", "type": "string" },
+    { "name": "viewtime", "type": "long" },
+    { "name": "regionid", "type": "string" }
+  ]
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════════════════════════════════════════════════════
+         SECTION 4: SUPPORT DESK
+         ═════════════════════════════════════════════════════════ -->
+    <section class="store-section" id="sec-support">
+      <div class="support-layout">
+        <!-- Ticket Submission Form -->
+        <div class="support-card">
+          <h2 class="support-title">Submit a Priority Support Request</h2>
+          <p class="support-desc">Encountering an issue with hardware delivery, payment processing, or Kafka cluster latency? File a ticket to reach our 24/7 engineering team.</p>
+
+          <form onsubmit="handleSupportSubmit(event)">
+            <div class="form-row">
+              <label class="form-lbl">Your Name / Organization</label>
+              <input type="text" class="form-input" id="support-name" required value="Sarah Connor (Acme Corp)">
+            </div>
+
+            <div class="form-row">
+              <label class="form-lbl">Issue Category</label>
+              <select class="form-select" id="support-category">
+                <option value="checkout_payment">Billing & Checkout Failure (Urgent)</option>
+                <option value="cluster_latency">Kafka Broker Latency Spike</option>
+                <option value="hardware_shipping">Workstation Shipping & Customs</option>
+                <option value="api_auth">API Token & Webhook Assistance</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label class="form-lbl">Urgency Level</label>
+              <select class="form-select" id="support-urgency">
+                <option value="critical">Critical (Blocking Production)</option>
+                <option value="high" selected>High (Need Resolution Today)</option>
+                <option value="normal">Normal Inquiry</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label class="form-lbl">Description of Issue</label>
+              <textarea class="form-textarea" id="support-message" required placeholder="Describe what happened...">Card declined repeatedly on checkout step 2 despite bank approval. Need assistance to prevent subscription cancellation.</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-danger" style="width:100%">
+              Submit Ticket (Emits Real Friction Telemetry)
+            </button>
+          </form>
+        </div>
+
+        <!-- FAQs & SLA Status -->
+        <div class="support-card">
+          <h2 class="support-title">Frequently Answered Questions</h2>
+          <p class="support-desc">Immediate answers for common billing, shipping, and cluster configurations.</p>
+
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-q">What is your guaranteed response SLA?</div>
+              <div class="faq-a">Enterprise tiers receive a 15-minute response SLA. Growth accounts receive 1-hour priority coverage, 24 hours a day.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">Can I transfer my Dedicated Kafka Cluster to my own AWS VPC?</div>
+              <div class="faq-a">Yes. We support VPC Peering and AWS Transit Gateway attachments directly to your private cluster in Ohio us-east-2.</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-q">What happens if my payment fails?</div>
+              <div class="faq-a">Our automated retention system sends an instant secure payment link and provides a 72-hour grace period before service suspension.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Churn Tests Box (Available on all sections) -->
+    <div class="test-actions-box">
+      <div class="box-title">Simulate Customer Friction Events (Real API Triggers)</div>
+      <div class="box-desc">
+        Click any of these buttons to test how CustomerPulse flags at-risk customers in real time:
+      </div>
+      <div class="box-actions">
+        <button class="btn btn-danger" onclick="abandonCart()">
+          🚨 Leave Checkout / Abandon Cart ($1,999)
+        </button>
+        <button class="btn btn-danger" onclick="fileSupportIssue()">
+          ⚠️ Submit Frustrated Support Ticket
+        </button>
+        <button class="btn btn-secondary" onclick="showSection('pricing')">
+          👀 Browse Pricing Plans
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Live Status Dock at bottom -->
+  <div class="dock">
+    <div class="dock-left">
+      <span class="dock-dot"></span>
+      <span>Connected to CustomerPulse API:</span>
+      <span class="dock-mono" id="dock-session">...</span>
+    </div>
+    <div>
+      Last Action Sent: <span class="dock-mono" id="dock-action">pageview /products</span>
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function updateDock(action) {
+      if (window.CustomerPulse) {
+        document.getElementById('dock-session').textContent = window.CustomerPulse.getSessionId();
+      }
+      document.getElementById('dock-action').textContent = `${action} (${new Date().toLocaleTimeString()})`;
+    }
+
+    function showSection(secId) {
+      // Toggle nav
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      const activeLink = document.getElementById(`nav-${secId}`);
+      if (activeLink) activeLink.classList.add('active');
+
+      // Toggle section
+      document.querySelectorAll('.store-section').forEach(s => s.classList.remove('active'));
+      const targetSec = document.getElementById(`sec-${secId}`);
+      if (targetSec) targetSec.classList.add('active');
+
+      // Emit pageview to CustomerPulse
+      const pagePath = `/${secId}`;
+      if (window.CustomerPulse) {
+        window.CustomerPulse.page(pagePath);
+      }
+      updateDock(`pageview ${pagePath}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      document.getElementById('cart-pill').textContent = cart.length;
+      if (window.CustomerPulse) {
+        window.CustomerPulse.track('add_to_cart', {
+          product: item,
+          price: price,
+          cartTotal: cart.reduce((s, i) => s + i.price, 0)
+        });
+      }
+      updateDock(`add_to_cart: ${item}`);
+    }
+
+    function selectPlan(planName, price) {
+      if (window.CustomerPulse) {
+        window.CustomerPulse.track('plan_selected', {
+          plan: planName,
+          price: price
+        });
+      }
+      updateDock(`plan_selected: ${planName} ($${price}/mo)`);
+      alert(`Selected ${planName} ($${price}/mo).\n\nSent event to CustomerPulse via /api/v1/track!`);
+    }
+
+    function openCheckout() {
+      if (!cart.length) {
+        alert('Your cart is empty! Click "Add to Cart" on a product first.');
+        return;
+      }
+      const total = cart.reduce((s, i) => s + i.price, 0);
+      if (window.CustomerPulse) {
+        window.CustomerPulse.track('checkout_viewed', { cartTotal: total });
+      }
+      updateDock('checkout_viewed');
+      alert(`Proceeding to checkout with ${cart.length} item(s) totalling $${total.toLocaleString()}.\n\nTry clicking "Leave Checkout / Abandon Cart" below to see CustomerPulse flag this session as At-Risk!`);
+    }
+
+    function abandonCart() {
+      const val = cart.length ? cart.reduce((s, i) => s + i.price, 0) : 1999;
+      if (window.CustomerPulse) {
+        window.CustomerPulse.track('checkout_abandon', {
+          cartValue: val,
+          path: '/checkout/payment'
+        });
+      }
+      updateDock(`checkout_abandon ($${val})`);
+      alert(`Sent real "checkout_abandon" event to CustomerPulse!\nLook at your CustomerPulse Dashboard tab — you will see this customer marked as At-Risk with a 1-click rescue button.`);
+    }
+
+    function fileSupportIssue() {
+      if (window.CustomerPulse) {
+        window.CustomerPulse.track('support_ticket_created', {
+          issue: 'Payment checkout failed',
+          severity: 'high'
+        });
+      }
+      updateDock('support_ticket_created');
+      alert('Sent support ticket event to CustomerPulse!');
+    }
+
+    function handleSupportSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('support-name').value;
+      const cat = document.getElementById('support-category').value;
+      const urg = document.getElementById('support-urgency').value;
+      const msg = document.getElementById('support-message').value;
+
+      if (window.CustomerPulse) {
+        window.CustomerPulse.track('support_ticket_created', {
+          customerName: name,
+          category: cat,
+          urgency: urg,
+          preview: msg.substring(0, 50)
+        });
+      }
+      updateDock(`ticket_submitted: ${cat}`);
+      alert(`Support ticket received for ${name}!\n\nTicket ID: #TK-${Math.floor(Math.random()*89999+10000)}\nPriority: ${urg.toUpperCase()}\n\nReal friction telemetry has been posted to /api/v1/track.`);
+    }
+
+    function logIn() {
+      const names = ['Sarah Connor (Acme Corp)', 'David Miller (Stripe Client)', 'Kenji Sato (Cloud Logistics)'];
+      const picked = names[Math.floor(Math.random() * names.length)];
+      if (window.CustomerPulse) {
+        window.CustomerPulse.identify('usr_' + Date.now().toString(36), { name: picked });
+      }
+      document.getElementById('login-text').textContent = picked.split(' ')[0];
+      updateDock(`login: ${picked}`);
+      alert(`Logged in as ${picked}. Future events will display your name on the CustomerPulse dashboard.`);
+    }
+
+    function showDoc(docId) {
+      document.querySelectorAll('.docs-link').forEach(l => l.classList.remove('active'));
+      event.target.classList.add('active');
+      alert(`Viewing ${docId} documentation section. Telemetry emitted to CustomerPulse.`);
+      if (window.CustomerPulse) {
+        window.CustomerPulse.page(`/docs/${docId}`);
+      }
+    }
+
+    setTimeout(() => updateDock('pageview /products'), 200);
+  </script>
+</body>
+</html>
