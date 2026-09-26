@@ -56,10 +56,10 @@ Traditional customer churn analytics rely on batch jobs running 24 to 48 hours a
                                          ▼                                 ▼
                              ┌────────────────────────┐        ┌───────────────────────┐
                              │ CustomerPulse Dashboard│        │ Webhook Action Sinks  │
-                             │ (Real-time WebSocket)  │        │ (Slack / Email / CRM) │
+                             │ (Real-time WebSocket)  │        │                       │
                              └────────────────────────┘        └───────────────────────┘
 ```
-
+![CustomerPulse.png](CustomerPulse.png)
 ---
 
 ## 🚀 Quick Start (Local Setup)
@@ -186,7 +186,3 @@ END) >= 30;
 ```
 
 ---
-
-## 🏆 Dev Day Submission Resources
-
-For your complete Developer Day submission form cheat sheet, connector details, Avro schema, and Stream Lineage screenshot guide, check **[`CONFLUENT_SETUP.md`](CONFLUENT_SETUP.md)**.
