@@ -369,6 +369,7 @@
 
   $btnConfirm.addEventListener('click', async () => {
     if (!selectedModalSession) return;
+    const sessToRescue = selectedModalSession;
     const selectedOffer = document.querySelector('input[name="rescue_offer"]:checked')?.value || '15_percent';
     window.CustomerPulse.closeModal();
 
@@ -378,11 +379,11 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           playbookId: selectedOffer,
-          sessionId: selectedModalSession.sessionId
+          sessionId: sessToRescue.sessionId
         })
       });
       const data = await res.json();
-      showToast(`✅ Dispatched offer to ${selectedModalSession.accountName}! Preserved $${data.preservedAmount.toLocaleString()} revenue.`);
+      showToast(`✅ Dispatched offer to ${sessToRescue.accountName || sessToRescue.userId}! Preserved $${data.preservedAmount.toLocaleString()} revenue.`);
       loadSessions();
     } catch (err) {
       showToast(`Failed: ${err.message}`);
@@ -407,7 +408,10 @@
       showToast('Data refreshed.');
     },
     openRescueModal: (sessionId) => {
-      const s = currentSessions.find(x => x.sessionId === sessionId);
+      let s = currentSessions.find(x => x.sessionId === sessionId);
+      if (!s) {
+        s = currentSessions.find(x => x.userId === sessionId) || currentSessions[0];
+      }
       if (!s) return;
       selectedModalSession = s;
 
